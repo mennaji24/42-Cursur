@@ -33,9 +33,9 @@ long long	get_time(void)
 
 }
 
-void sleep(long long duration, t_data *data)
+void ft_sleep(long long duration, t_data *data)
 {
     long long start_time =  get_time();
     while(!(data->died) && (get_time() - start_time) < duration)
-        useleep(50);
+        usleep(50);
 }
