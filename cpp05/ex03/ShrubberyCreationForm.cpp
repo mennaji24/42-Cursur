@@ -1,29 +1,27 @@
 #include "ShrubberyCreationForm.hpp"
+#include "Bureaucrat.hpp"
+#include <fstream>
+#include <iostream>
 
-// Constructor to initialize the form with target
-ShrubberyCreationForm::ShrubberyCreationForm(const std::string& target)
-    : AForm("Shrubbery Creation Form", 145, 137), target(target) {}
+ShrubberyCreationForm::ShrubberyCreationForm(const std::string &target)
+    : AForm("ShrubberyCreationForm", 145, 137), target(target) {}
 
-// Execute method to write ASCII trees to a file
-void ShrubberyCreationForm::execute(Bureaucrat const & executor) const {
+ShrubberyCreationForm::~ShrubberyCreationForm() {}
+
+void ShrubberyCreationForm::execute(Bureaucrat const &executor) const {
     if (!isSigned()) {
-        throw AForm::FormNotSignedException();
+        throw FormNotSignedException();
     }
-    if (executor.getGrade() > getGradeToExecute()) {
+    if (executor.getGrade() > getExecGrade()) {
         throw AForm::GradeTooLowException();
     }
 
-    std::ofstream outfile(target + "_shrubbery");
-    if (!outfile) {
-        throw std::runtime_error("Could not open file");
+    // Convert std::string to const char* using c_str()
+    std::ofstream file((target + "_shrubbery").c_str()); 
+    if (file.is_open()) {
+        file << "ASCII Trees\n"; // Simplified example
+        file.close();
+    } else {
+        std::cerr << "Failed to create file." << std::endl;
     }
-
-    outfile << "      /\\\n";
-    outfile << "     /\\*\\\n";
-    outfile << "    /\\O\\*\\\n";
-    outfile << "   /*/\\/\\/\\\n";
-    outfile << "  /\\O\\/\\*\\/\\\n";
-    outfile << " /\\*\\/\\*\\/\\/\\\n";
-    outfile << "/\\O\\/\\/*/\\/O/\\\n";
-    outfile.close();
 }

@@ -1,41 +1,37 @@
-#ifndef BUREAUCRAT_HPP
-#define BUREAUCRAT_HPP
+#ifndef BUREAUCRAT_H
+#define BUREAUCRAT_H
 
 #include <iostream>
-#include <stdexcept>
-#include <string>
+#include <exception>
 
-class Form; // Forward declaration
-
+class Form;
 class Bureaucrat {
 public:
-    class GradeTooHighException : public std::exception {
-        const char* what() const noexcept override {
-            return "Grade is too high!";
-        }
-    };
+    Bureaucrat(const std::string &name, int grade);
+    ~Bureaucrat();
 
-    class GradeTooLowException : public std::exception {
-        const char* what() const noexcept override {
-            return "Grade is too low!";
-        }
-    };
-
-    Bureaucrat(const std::string& name, int grade);
-    
-    const std::string& getName() const;
+    const std::string &getName() const;
     int getGrade() const;
 
     void incrementGrade();
     void decrementGrade();
-    
-    void signForm(Form& form) const;
+    void signForm(Form &form) const;
 
-    friend std::ostream& operator<<(std::ostream& os, const Bureaucrat& b);
+    class GradeTooHighException : public std::exception {
+        virtual const char* what() const throw();
+    };
+
+    class GradeTooLowException : public std::exception {
+        virtual const char* what() const throw();
+    };
 
 private:
     const std::string name;
     int grade;
+
+    void checkGrade() const;
 };
 
-#endif // BUREAUCRAT_HPP
+std::ostream &operator<<(std::ostream &os, const Bureaucrat &bureaucrat);
+
+#endif // BUREAUCRAT_H

@@ -1,25 +1,15 @@
 #include "Bureaucrat.hpp"
 
-// Implementation of GradeTooHighException
-const char* Bureaucrat::GradeTooHighExpception::what() const noexcept{
-    return "Grade is too high!";
+// Constructor
+Bureaucrat::Bureaucrat(const std::string &name, int grade) : name(name), grade(grade) {
+    checkGrade();
 }
 
-const char* Bureaucrat::GradeTooLowException::what() const noexcept{
-    return "Grade is too low!";
-}
+// Destructor
+Bureaucrat::~Bureaucrat() {}
 
-Bureaucrat::Bureaucrat(const std::string& name, int grade): name(name), grade(grade){
-    if (grade < 1){
-        throw GradeTooHighExpception()
-    }
-    if (grade > 150){
-        throw GradeTooLowException()
-    }
-}
-
-//implementation of getName
-const std::string& getName() const{
+// Getters
+const std::string &Bureaucrat::getName() const {
     return name;
 }
 
@@ -27,26 +17,38 @@ int Bureaucrat::getGrade() const {
     return grade;
 }
 
-void Bureaucrat::incrementGrade(){
-    if(grade - 1 < 1){
-        throw GradeTooHighExpception();
-    }
+// Increment grade
+void Bureaucrat::incrementGrade() {
     --grade;
+    checkGrade();
 }
 
-void Bureaucrat::decrementGrade()
-{
-    if (grade + 1 > 150) {
+// Decrement grade
+void Bureaucrat::decrementGrade() {
+    ++grade;
+    checkGrade();
+}
+
+// Exception handling
+const char* Bureaucrat::GradeTooHighException::what() const throw() {
+    return "Grade is too high!";
+}
+
+const char* Bureaucrat::GradeTooLowException::what() const throw() {
+    return "Grade is too low!";
+}
+
+// Check grade validity
+void Bureaucrat::checkGrade() const {
+    if (grade < 1) {
+        throw GradeTooHighException();
+    } else if (grade > 150) {
         throw GradeTooLowException();
     }
-    ++grade;
 }
 
- //std::ostream& os: A reference to an output stream object
- // (such as std::cout).
-std::ostream& operato<<(std::ostream& os, const Bureaucrat& b)
-{
-    os << b.getName() << ", bureaucrat grade " << b.getGrade();
+// Output operator overload
+std::ostream &operator<<(std::ostream &os, const Bureaucrat &bureaucrat) {
+    os << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade();
     return os;
 }
-

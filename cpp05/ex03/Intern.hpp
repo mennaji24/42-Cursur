@@ -1,26 +1,22 @@
 #ifndef INTERN_HPP
 #define INTERN_HPP
 
-#include <iostream>
-#include <string>
-#include "AForm.hpp"
-#include "ShrubberyCreationForm.hpp"
-#include "RobotomyRequestForm.hpp"
-#include "PresidentialPardonForm.hpp"
+#include "AForm.hpp" // Base class for forms
 
 class Intern {
 public:
-    Intern() = default;
-    ~Intern() = default;
-
-    AForm* makeForm(const std::string& formName, const std::string& target);
+    Intern();
+    ~Intern();
+    AForm* makeForm(const std::string &formName, const std::string &target) const;
 
 private:
-    typedef AForm* (Intern::*FormCreator)(const std::string& target);
-    
-    AForm* createShrubberyCreationForm(const std::string& target);
-    AForm* createRobotomyRequestForm(const std::string& target);
-    AForm* createPresidentialPardonForm(const std::string& target);
+    AForm* createShrubberyCreationForm(const std::string &target) const;
+    AForm* createRobotomyRequestForm(const std::string &target) const;
+    AForm* createPresidentialPardonForm(const std::string &target) const;
+    typedef AForm* (Intern::*FormCreator)(const std::string &) const;
+
+    // Map form names to creator functions
+    static const std::pair<std::string, FormCreator> formCreators[];
 };
 
 #endif // INTERN_HPP

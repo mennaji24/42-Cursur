@@ -2,41 +2,26 @@
 #include "ShrubberyCreationForm.hpp"
 #include "RobotomyRequestForm.hpp"
 #include "PresidentialPardonForm.hpp"
-#include "Intern.hpp"
 
 int main() {
     try {
-        Bureaucrat john("John Doe", 3);
-        Bureaucrat jane("Jane Smith", 25);
+        Bureaucrat john("John Doe", 50);
+        ShrubberyCreationForm shrubbery("home");
+        RobotomyRequestForm robotomy("home");
+        PresidentialPardonForm pardon("home");
 
-        Intern someRandomIntern;
+        john.signForm(shrubbery);
+        john.executeForm(shrubbery);
 
-        AForm* shrubbery = someRandomIntern.makeForm("shrubbery creation", "home");
-        AForm* robotomy = someRandomIntern.makeForm("robotomy request", "John Doe");
-        AForm* pardon = someRandomIntern.makeForm("presidential pardon", "Jane Smith");
-        AForm* unknown = someRandomIntern.makeForm("unknown form", "Nowhere");
+        john.signForm(robotomy);
+        john.executeForm(robotomy);
 
-        if (shrubbery) {
-            john.signForm(*shrubbery);
-            john.executeForm(*shrubbery);
-            delete shrubbery;
-        }
-
-        if (robotomy) {
-            jane.signForm(*robotomy);
-            jane.executeForm(*robotomy);
-            delete robotomy;
-        }
-
-        if (pardon) {
-            john.signForm(*pardon);
-            john.executeForm(*pardon);
-            delete pardon;
-        }
-
-    } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        john.signForm(pardon);
+        john.executeForm(pardon);
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
     }
 
     return 0;
 }
+

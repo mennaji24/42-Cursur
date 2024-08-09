@@ -1,37 +1,22 @@
-#include "Bucreaut.hpp"
+#include "Bureaucrat.hpp"
 
-int main(){
-    try{
-        Bureaucrat john("John Doe", 2);
-        std::cout << john << std::endl;
-        john.incrementGrade();
-        std::cout << john << std::endl;
-
-        john.incrementGrade();
-        std::cout << john << std::endl;
-    } catch (const std::exception& e) {
-        std::cerr << "Exception caught: " << e.what() << std::endl;
-    }
-
+int main() {
     try {
-        Bureaucrat jane("Jane Smith", 151);  // This will throw an exception
-    } catch (const std::exception& e) {
-        std::cerr << "Exception caught: " << e.what() << std::endl;
-    }
+        Bureaucrat b1("John Doe", 50);
+        std::cout << b1 << std::endl;
 
-    try {
-        Bureaucrat jane("Jane Smith", 150);
-        std::cout << jane << std::endl;
+        b1.incrementGrade();
+        std::cout << b1 << std::endl;
 
-        jane.decrementGrade();
-        std::cout << jane << std::endl;
+        b1.decrementGrade();
+        b1.decrementGrade();
+        std::cout << b1 << std::endl;
 
-        jane.decrementGrade();  // This will throw an exception
-        std::cout << jane << std::endl;
-    } catch (const std::exception& e) {
-        std::cerr << "Exception caught: " << e.what() << std::endl;
+        // This will throw an exception
+        Bureaucrat b2("Jane Doe", 151);
+    } catch (const std::exception &e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
     }
 
     return 0;
-
 }

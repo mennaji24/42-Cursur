@@ -1,25 +1,27 @@
 #include "RobotomyRequestForm.hpp"
-#include <iostream>
+#include "Bureaucrat.hpp"
+#include <cstdlib>
+#include <ctime>
 
-// Constructor to initialize the form with target
-RobotomyRequestForm::RobotomyRequestForm(const std::string& target)
-    : AForm("Robotomy Request Form", 72, 45), target(target) {
-    std::srand(std::time(nullptr));
+RobotomyRequestForm::RobotomyRequestForm(const std::string &target)
+    : AForm("RobotomyRequestForm", 72, 45), target(target) {
+    std::srand(std::time(0));
 }
 
-// Execute method to simulate robotomy
-void RobotomyRequestForm::execute(Bureaucrat const & executor) const {
+RobotomyRequestForm::~RobotomyRequestForm() {}
+
+void RobotomyRequestForm::execute(Bureaucrat const &executor) const {
     if (!isSigned()) {
-        throw AForm::FormNotSignedException();
+        throw FormNotSignedException();
     }
-    if (executor.getGrade() > getGradeToExecute()) {
+    if (executor.getGrade() > getExecGrade()) {
         throw AForm::GradeTooLowException();
     }
 
-    std::cout << "Drilling noises..." << std::endl;
+    std::cout << "* drilling noises *" << std::endl;
     if (std::rand() % 2) {
-        std::cout << target << " has been robotomized successfully." << std::endl;
+        std::cout << target << " has been robotomized successfully!" << std::endl;
     } else {
-        std::cout << "Robotomy failed for " << target << "." << std::endl;
+        std::cout << "Failed to robotomize " << target << "!" << std::endl;
     }
 }

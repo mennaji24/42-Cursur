@@ -2,13 +2,13 @@
 CXX = g++
 
 # Compiler flags
-CXXFLAGS = -std=c++11 -Wall -Wextra -pedantic
+CXXFLAGS = -std=c++98 -Wall -Wextra -pedantic
 
 # Target executable
-TARGET = bureaucrat_forms
+TARGET = bureaucrat_forms1
 
 # Source files
-SRCS = main.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp RobotomyRequestForm.cpp PresidentialPardonForm.cpp
+SRCS =  main.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp RobotomyRequestForm.cpp PresidentialPardonForm.cpp Intern.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
@@ -30,3 +30,5 @@ clean:
 
 # Phony targets
 .PHONY: all clean
+
+

@@ -2,17 +2,16 @@
 #define SHRUBBERYCREATIONFORM_HPP
 
 #include "AForm.hpp"
-#include <fstream>
 
 class ShrubberyCreationForm : public AForm {
 public:
-    ShrubberyCreationForm(const std::string& target);
-    virtual ~ShrubberyCreationForm() = default;
+    ShrubberyCreationForm(const std::string &target);
+    virtual ~ShrubberyCreationForm();
 
-    void execute(Bureaucrat const & executor) const override;
+    virtual void execute(Bureaucrat const &executor) const;
 
 private:
-    std::string target;
+    const std::string target;
 };
 
 #endif // SHRUBBERYCREATIONFORM_HPP

@@ -1,41 +1,41 @@
 #include "Intern.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
+#include <iostream>
+#include <utility> // For std::pair
 
-// Method to create a ShrubberyCreationForm
-AForm* Intern::createShrubberyCreationForm(const std::string& target) {
+// Initialize the formCreators array
+const std::pair<std::string, Intern::FormCreator> Intern::formCreators[] = {
+    std::pair<std::string, Intern::FormCreator>("shrubbery creation", &Intern::createShrubberyCreationForm),
+    std::pair<std::string, Intern::FormCreator>("robotomy request", &Intern::createRobotomyRequestForm),
+    std::pair<std::string, Intern::FormCreator>("presidential pardon", &Intern::createPresidentialPardonForm)
+};
+
+Intern::Intern() {}
+
+Intern::~Intern() {}
+
+AForm* Intern::createShrubberyCreationForm(const std::string &target) const {
     return new ShrubberyCreationForm(target);
 }
 
-// Method to create a RobotomyRequestForm
-AForm* Intern::createRobotomyRequestForm(const std::string& target) {
+AForm* Intern::createRobotomyRequestForm(const std::string &target) const {
     return new RobotomyRequestForm(target);
 }
 
-// Method to create a PresidentialPardonForm
-AForm* Intern::createPresidentialPardonForm(const std::string& target) {
+AForm* Intern::createPresidentialPardonForm(const std::string &target) const {
     return new PresidentialPardonForm(target);
 }
 
-// Method to create a form based on the given name and target
-AForm* Intern::makeForm(const std::string& formName, const std::string& target) {
-    const std::string formNames[] = {
-        "shrubbery creation",
-        "robotomy request",
-        "presidential pardon"
-    };
-
-    FormCreator formCreators[] = {
-        &Intern::createShrubberyCreationForm,
-        &Intern::createRobotomyRequestForm,
-        &Intern::createPresidentialPardonForm
-    };
-
-    for (size_t i = 0; i < sizeof(formNames) / sizeof(std::string); ++i) {
-        if (formNames[i] == formName) {
-            std::cout << "Intern creates " << formName << " form" << std::endl;
-            return (this->*formCreators[i])(target);
+AForm* Intern::makeForm(const std::string &formName, const std::string &target) const {
+    for (size_t i = 0; i < sizeof(formCreators) / sizeof(formCreators[0]); ++i) {
+        if (formCreators[i].first == formName) {
+            AForm* form = (this->*formCreators[i].second)(target);
+            std::cout << "Intern creates " << formName << std::endl;
+            return form;
         }
     }
-
-    std::cout << "Error: Form name " << formName << " does not exist" << std::endl;
-    return nullptr;
+    std::cerr << "Intern could not create form: " << formName << std::endl;
+    return NULL;
 }

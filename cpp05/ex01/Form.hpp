@@ -1,41 +1,40 @@
-#ifndef FORM_HPP
-#define FORM_HPP
+#ifndef FORM_H
+#define FORM_H
 
 #include <iostream>
-#include <string>
-#include "Bureaucrat.hpp"
+#include <exception>
 
- class Form {
+class Bureaucrat; // Forward declaration
+
+class Form {
 public:
+    Form(const std::string &name, int signGrade, int execGrade);
+    ~Form();
+
+    const std::string &getName() const;
+    bool isSigned() const;
+    int getSignGrade() const;
+    int getExecGrade() const;
+
+    void beSigned(const Bureaucrat &bureaucrat);
+
     class GradeTooHighException : public std::exception {
-        const char* what() const noexcept override {
-            return "Form grade is too high!";
-        }
+        virtual const char* what() const throw();
     };
 
     class GradeTooLowException : public std::exception {
-        const char* what() const noexcept override {
-            return "Form grade is too low!";
-        }
+        virtual const char* what() const throw();
     };
-
-    Form(const std::string& name, int gradeToSign, int gradeToExecute);
-    
-    const std::string& getName() const;
-    bool isSigned() const;
-    int getGradeToSign() const;
-    int getGradeToExecute() const;
-
-    void beSigned(const Bureaucrat& bureaucrat);
-
-    friend std::ostream& operator<<(std::ostream& os, const Form& form);
 
 private:
     const std::string name;
     bool signedStatus;
-    const int gradeToSign;
-    const int gradeToExecute;
+    const int signGrade;
+    const int execGrade;
+
+    void checkGrade(int grade) const;
 };
 
-#endif 
+std::ostream &operator<<(std::ostream &os, const Form &form);
 
+#endif // FORM_H

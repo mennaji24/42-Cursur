@@ -3,23 +3,19 @@
 
 int main() {
     try {
-        Bureaucrat john("John Doe", 2);
-        Form formA("Form A", 5, 10);
+        Bureaucrat john("John Doe", 50);
+        Form formA("Form A", 45, 70);
 
         std::cout << formA << std::endl;
+        john.signForm(formA);  // Should succeed
 
-        john.signForm(formA);  // Should print failure message
+        Bureaucrat jane("Jane Doe", 80);
+        Form formB("Form B", 30, 60);
 
-        Bureaucrat jane("Jane Smith", 6);
-        jane.signForm(formA);  // Should print success message
-
-        std::cout << formA << std::endl;
-
-        Form formB("Form B", 1, 10);
-        jane.signForm(formB);  // Should print failure message due to high required grade
-
-    } catch (const std::exception& e) {
-        std::cerr << "Exception caught: " << e.what() << std::endl;
+        std::cout << formB << std::endl;
+        jane.signForm(formB);  // Should fail
+    } catch (const std::exception &e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
     }
 
     return 0;

@@ -2,48 +2,46 @@
 #define AFORM_HPP
 
 #include <iostream>
-#include <stdexcept>
+#include <exception>
 #include <string>
-#include "Bureaucrat.hpp"
+
+class Bureaucrat; // Forward declaration
 
 class AForm {
 public:
+    AForm(const std::string &name, int signGrade, int execGrade);
+    virtual ~AForm();
+
+    const std::string &getName() const;
+    bool isSigned() const;
+    int getSignGrade() const;
+    int getExecGrade() const;
+
+    void beSigned(const Bureaucrat &bureaucrat);
+    virtual void execute(Bureaucrat const &executor) const = 0; // Pure virtual function
+
     class GradeTooHighException : public std::exception {
-        const char* what() const noexcept override {
-            return "Grade is too high!";
-        }
+        virtual const char* what() const throw();
     };
 
     class GradeTooLowException : public std::exception {
-        const char* what() const noexcept override {
-            return "Grade is too low!";
-        }
+        virtual const char* what() const throw();
     };
 
     class FormNotSignedException : public std::exception {
-        const char* what() const noexcept override {
-            return "Form is not signed!";
-        }
+        virtual const char* what() const throw();
     };
 
-    AForm(const std::string& name, int gradeToSign, int gradeToExecute);
-    virtual ~AForm() = default;
-
-    const std::string& getName() const;
-    bool isSigned() const;
-    int getGradeToSign() const;
-    int getGradeToExecute() const;
-    void beSigned(const Bureaucrat& bureaucrat);
-
-    virtual void execute(Bureaucrat const & executor) const = 0;
-
-    friend std::ostream& operator<<(std::ostream& os, const AForm& form);
+protected:
+    void checkGrade(int grade) const;
 
 private:
     const std::string name;
     bool signedStatus;
-    const int gradeToSign;
-    const int gradeToExecute;
+    const int signGrade;
+    const int execGrade;
 };
+
+std::ostream &operator<<(std::ostream &os, const AForm &form);
 
 #endif // AFORM_HPP

@@ -1,25 +1,16 @@
 #include "Bureaucrat.hpp"
+#include "Form.hpp"
 
-// Implementation of GradeTooHighException
-const char* Bureaucrat::GradeTooHighExpception::what() const noexcept{
-    return "Grade is too high!";
+// Constructor
+Bureaucrat::Bureaucrat(const std::string &name, int grade) : name(name), grade(grade) {
+    checkGrade();
 }
 
-const char* Bureaucrat::GradeTooLowException::what() const noexcept{
-    return "Grade is too low!";
-}
+// Destructor
+Bureaucrat::~Bureaucrat() {}
 
-Bureaucrat::Bureaucrat(const std::string& name, int grade): name(name), grade(grade){
-    if (grade < 1){
-        throw GradeTooHighExpception()
-    }
-    if (grade > 150){
-        throw GradeTooLowException()
-    }
-}
-
-//implementation of getName
-const std::string& getName() const{
+// Getters
+const std::string &Bureaucrat::getName() const {
     return name;
 }
 
@@ -27,30 +18,47 @@ int Bureaucrat::getGrade() const {
     return grade;
 }
 
-void Bureaucrat::incrementGrade(){
-    if(grade - 1 < 1){
-        throw GradeTooHighExpception();
-    }
+// Increment grade
+void Bureaucrat::incrementGrade() {
     --grade;
+    checkGrade();
 }
 
-std::ostream& operato<<(std::ostream& os, const Bureaucrat& b)
-{
-    os << b.getName() << ", bureaucrat grade " << b.getGrade();
+// Decrement grade
+void Bureaucrat::decrementGrade() {
+    ++grade;
+    checkGrade();
+}
+
+// Exception handling
+const char* Bureaucrat::GradeTooHighException::what() const throw() {
+    return "Grade is too high!";
+}
+
+const char* Bureaucrat::GradeTooLowException::what() const throw() {
+    return "Grade is too low!";
+}
+
+// Check grade validity
+void Bureaucrat::checkGrade() const {
+    if (grade < 1) {
+        throw GradeTooHighException();
+    } else if (grade > 150) {
+        throw GradeTooLowException();
+    }
+}
+
+// Output operator overload
+std::ostream &operator<<(std::ostream &os, const Bureaucrat &bureaucrat) {
+    os << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade();
     return os;
 }
 
-void Bureaucrat::signForm(Form& form) const {
+void Bureaucrat::signForm(Form &form) const {
     try {
         form.beSigned(*this);
-        std::cout << name << " signed " << form.getName() << std::endl;
-    } catch (const std::exception& e) {
-        std::cout << name << " couldn’t sign " << form.getName() << " because " << e.what() << std::endl;
+        std::cout << name << " signed " << form << std::endl;
+    } catch (const std::exception &e) {
+        std::cout << name << " couldn’t sign " << form << " because " << e.what() << std::endl;
     }
-}
-
-// Existing operator<< implementation
-std::ostream& operator<<(std::ostream& os, const Bureaucrat& b) {
-    os << b.getName() << ", bureaucrat grade " << b.getGrade();
-    return os;
 }

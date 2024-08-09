@@ -5,13 +5,13 @@
 
 class PresidentialPardonForm : public AForm {
 public:
-    PresidentialPardonForm(const std::string& target);
-    virtual ~PresidentialPardonForm() = default;
+    PresidentialPardonForm(const std::string &target);
+    virtual ~PresidentialPardonForm();
 
-    void execute(Bureaucrat const & executor) const override;
+    virtual void execute(Bureaucrat const &executor) const;
 
 private:
-    std::string target;
+    const std::string target;
 };
 
 #endif // PRESIDENTIALPARDONFORM_HPP
